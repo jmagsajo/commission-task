@@ -5,12 +5,12 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Joseph\\CommissionTask\\": "src"
+            "App\\CommissionTask\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Joseph\\CommissionTask\\Tests\\": "tests"
+            "App\\CommissionTask\\Tests\\": "tests"
         }
     },
     "require": {

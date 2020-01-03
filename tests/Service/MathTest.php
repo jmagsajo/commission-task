@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Joseph\CommissionTask\Tests\Service;
+namespace App\CommissionTask\Tests\Service;
 
 use PHPUnit\Framework\TestCase;
-use Joseph\CommissionTask\Service\Math;
+use App\CommissionTask\Service\Math;
 
 class MathTest extends TestCase
 {
@@ -40,6 +40,30 @@ class MathTest extends TestCase
             'add 2 natural numbers' => ['1', '2', '3'],
             'add negative number to a positive' => ['-1', '2', '1'],
             'add natural number to a float' => ['1', '1.05123', '2.05'],
+        ];
+    }
+
+    /**
+     * @param string $leftOperand
+     * @param string $rightOperand
+     * @param string $expectation
+     *
+     * @dataProvider dataProviderForMulTesting
+     */
+    public function testMul(string $leftOperand, string $rightOperand, string $expectation)
+    {
+        $this->assertEquals(
+            $expectation,
+            $this->math->mul($leftOperand, $rightOperand)
+        );
+    }
+
+    public function dataProviderForMulTesting(): array
+    {
+        return [
+            'multiply 2 natural numbers' => ['1', '2', '2'],
+            'multiply negative number to a positive' => ['-1', '2', '-2'],
+            'multiply natural number to a float' => ['1', '1.05123', '1.05'],
         ];
     }
 }

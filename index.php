@@ -1,8 +1,10 @@
 <?php
+define('ROOT', __DIR__);
+
+require_once(ROOT .'/vendor/autoload.php');
+
+require_once(ROOT .'/src/Service/Computation.php');
+
 $csv = $argv[1]; //read second argument
 
-$f = fopen($csv, 'r');
-
-print_r(fgetcsv($f));
-
-fclose( $f );
+$compute = new Computation($csv);

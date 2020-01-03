@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Joseph\CommissionTask\Service;
+namespace App\CommissionTask\Service;
 
 class Math
 {
@@ -16,5 +16,10 @@ class Math
     public function add(string $leftOperand, string $rightOperand): string
     {
         return bcadd($leftOperand, $rightOperand, $this->scale);
+    }
+    
+    public function mul(string $leftOperand, string $rightOperand): string
+    {
+        return bcmul($leftOperand, $rightOperand, $this->scale);
     }
 }
