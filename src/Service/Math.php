@@ -22,4 +22,9 @@ class Math
     {
         return bcmul($leftOperand, $rightOperand, $this->scale);
     }
+
+    public function div(string $leftOperand, string $rightOperand): string
+    {
+        return bcdiv($leftOperand, $rightOperand, $this->scale);
+    }
 }
