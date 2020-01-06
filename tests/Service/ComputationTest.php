@@ -5,41 +5,52 @@ declare(strict_types=1);
 namespace App\CommissionTask\Tests\Service;
 
 use PHPUnit\Framework\TestCase;
-use App\CommissionTask\Service\Math;
+use App\CommissionTask\Service\Computation;
 
 class ComputationTest extends TestCase
 {
     /**
      * @var Math
      */
-    private $math;
+    private $computation;
 
     public function setUp()
     {
-        $this->math = new Math(2);
+        $this->computation = new Computation("test.csv");
     }
 
     /**
-     * @param string $leftOperand
-     * @param string $rightOperand
-     * @param string $expectation
+     * @param array $expectation
      *
-     * @dataProvider dataProviderForAddTesting
+     * @dataProvider dataProviderForCSVFileTesting
      */
-    public function testAdd2(string $leftOperand, string $rightOperand, string $expectation)
+    public function testComputation(array $expectation)
     {
         $this->assertEquals(
             $expectation,
-            $this->math->add($leftOperand, $rightOperand)
+            $this->computation->computation()
         );
     }
 
-    public function dataProviderForAddTesting(): array
+    public function dataProviderForCSVFileTesting(): array
     {
         return [
-            'add 2 natural numbers' => ['1', '2', '3'],
-            'add negative number to a positive' => ['-1', '2', '1'],
-            'add natural number to a float' => ['1', '1.05123', '2.05'],
+            'csv file computation expectation' => [
+                                    [
+                                        "0" => "3.60",
+                                        "1" => "3.00",
+                                        "2" => "3.00",
+                                        "3" => "0.60",
+                                        "4" => "0.50",
+                                        "5" => "3.00",
+                                        "6" => "0.30",
+                                        "7" => "5.00",
+                                        "8" => "3.00",
+                                        "9" => "0.90",
+                                        "10" => "0.30",
+                                        "11" => "9,001.04",
+                                    ]  
+                                ]
         ];
     }
 
