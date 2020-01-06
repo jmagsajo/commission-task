@@ -17,22 +17,22 @@ class Computation
     public function __construct($path)
     {
         $this->path = $path;
-        $this->math = new Math(2);
+        $this->math = new Math(3);
     }
 
-    public function convertCurrency($currency, $commission_fee)
+    public function convertCurrency($currency, $commission_fee): float
     {
         if($currency == "USD")
         {
-            return $this->math->mul( strval($commission_fee), strval($this->usd));
+            return (float) $this->math->mul( strval($commission_fee), strval($this->usd));
         }
         else if($currency == "JPY")
         {
-            return $this->math->mul( strval($commission_fee), strval($this->jpy) );
+            return (float) $this->math->mul( strval($commission_fee), strval($this->jpy) );
         }
         else
         {
-            return $commission_fee;
+            return (float) $commission_fee;
         }
     }
 
@@ -48,14 +48,14 @@ class Computation
 
             if($currency == "JPY")
             {
-                $cash = floatval($cash / $this->jpy);
+                $cash = $this->math->div(strval($cash), strval($this->jpy));
             }
             else if($currency == "USD")
             {
-                $cash = floatval($cash / $this->usd);
+                $cash = $this->math->div(strval($cash), strval($this->usd));
             }
             
-            $commission_fee = floatval($this->math->mul(strval($cash), strval($this->commission)));
+            $commission_fee = (float) $this->math->mul(strval($cash), strval($this->commission));
             $commission_fee = round(ceil($commission_fee*100)/100, 2);
 
             switch($data[3])
@@ -66,18 +66,18 @@ class Computation
                         if($commission_fee > 0.50 )
                         {
                             $commission_fee = $this->convertCurrency($currency, 0.50);
-                            $output .= strval( number_format(floatval($commission_fee), 2) )."\n";
+                            $output .= strval( number_format( (float) $commission_fee, 2) )."\n";
                         }
                         else
                         {
                             $commission_fee = $this->convertCurrency($currency, $commission_fee);
-                            $total = number_format(floatval($commission_fee), 2);
+                            $total = number_format( (float) $commission_fee, 2);
                             $output .= strval($total) . "\n";
                         }
                     }else{
                         
                         $commission_fee = $this->convertCurrency($currency, $commission_fee);
-                        $total = number_format(floatval($commission_fee), 2);
+                        $total = number_format( (float) $commission_fee, 2);
                         $output .= strval($total) . "\n";
                     
                     }
@@ -87,12 +87,12 @@ class Computation
                     if($commission_fee > 5 )
                     {
                         $commission_fee = $this->convertCurrency($currency, 5.00);
-                        $output .= strval( number_format(floatval($commission_fee), 2) )."\n";
+                        $output .= strval( number_format( (float) $commission_fee, 2) )."\n";
                     }
                     else
                     {
                         $commission_fee = $this->convertCurrency($currency, $commission_fee);
-                        $total = number_format(floatval($commission_fee), 2);
+                        $total = number_format( (float) $commission_fee, 2);
                         $output .= strval($total) . "\n";
                     }
                 break;

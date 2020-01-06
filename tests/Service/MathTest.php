@@ -66,4 +66,29 @@ class MathTest extends TestCase
             'multiply natural number to a float' => ['1', '1.05123', '1.05'],
         ];
     }
+    
+    /**
+     * @param string $leftOperand
+     * @param string $rightOperand
+     * @param string $expectation
+     *
+     * @dataProvider dataProviderForDivTesting
+     */
+    public function testDiv(string $leftOperand, string $rightOperand, string $expectation)
+    {
+        $this->assertEquals(
+            $expectation,
+            $this->math->div($leftOperand, $rightOperand)
+        );
+    }
+
+    public function dataProviderForDivTesting(): array
+    {
+        return [
+            'divide 2 natural numbers' => ['100', '2', '50'],
+            'divide negative number to a positive' => ['-2', '2', '-1'],
+            'divide natural number to a float' => ['1', '1.05123', '0.95'],
+        ];
+    }
+
 }
