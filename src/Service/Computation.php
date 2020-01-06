@@ -36,10 +36,10 @@ class Computation
         }
     }
 
-    public function computation(): string
+    public function computation(): array
     {   
         $f = fopen($this->path, 'r');
-        $output = "";
+        $output = [];
         while(! feof($f))
         {   
             $data = fgetcsv($f);
@@ -66,19 +66,19 @@ class Computation
                         if($commission_fee > 0.50 )
                         {
                             $commission_fee = $this->convertCurrency($currency, 0.50);
-                            $output .= strval( number_format( (float) $commission_fee, 2) )."\n";
+                            array_push($output, number_format( (float) $commission_fee, 2));
                         }
                         else
                         {
                             $commission_fee = $this->convertCurrency($currency, $commission_fee);
                             $total = number_format( (float) $commission_fee, 2);
-                            $output .= strval($total) . "\n";
+                            array_push($output, $total);
                         }
                     }else{
                         
                         $commission_fee = $this->convertCurrency($currency, $commission_fee);
                         $total = number_format( (float) $commission_fee, 2);
-                        $output .= strval($total) . "\n";
+                        array_push($output, $total);
                     
                     }
 
@@ -87,13 +87,13 @@ class Computation
                     if($commission_fee > 5 )
                     {
                         $commission_fee = $this->convertCurrency($currency, 5.00);
-                        $output .= strval( number_format( (float) $commission_fee, 2) )."\n";
+                        array_push($output,  number_format( (float) $commission_fee, 2) );
                     }
                     else
                     {
                         $commission_fee = $this->convertCurrency($currency, $commission_fee);
                         $total = number_format( (float) $commission_fee, 2);
-                        $output .= strval($total) . "\n";
+                        array_push($output, $total);
                     }
                 break;
             }

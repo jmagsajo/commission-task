@@ -8,5 +8,10 @@ use App\CommissionTask\Service\Computation;
 $csv = $argv[1]; //read second argument
 
 $compute = new Computation($csv);
-$output = $compute->computation();
+$computation = $compute->computation();
+$output = "";
+foreach($computation as $i => $value){
+    $output .= $value."\n";
+}
+
 fwrite(STDOUT, $output);
