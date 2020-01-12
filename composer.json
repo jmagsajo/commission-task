@@ -6,12 +6,18 @@
     "autoload": {
         "psr-4": {
             "App\\CommissionTask\\": "src"
-        }
+        },
+        "files": [
+            "src/Helpers/Helper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
             "App\\CommissionTask\\Tests\\": "tests"
-        }
+        },
+        "files": [
+            "src/Helpers/Helper.php"
+        ]
     },
     "require": {
         "php": ">=7.0",
