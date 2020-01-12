@@ -10,6 +10,4 @@ then to run the app type:
 
 you can also run the phpunit by typing:
 
-1. <pre><code>composer run fix-cs</code></pre>
-
-2. <pre><code>composer run test</code></pre>
+1. <pre><code>composer run test</code></pre>
