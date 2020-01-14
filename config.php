@@ -4,6 +4,6 @@ return [
 
     'usd' => 1.1497,
     'jpy' => 129.53,
-    'commission' => 0.003
-
+    'commission' => 0.003,
+    'decimal_place' => 3,
 ];	

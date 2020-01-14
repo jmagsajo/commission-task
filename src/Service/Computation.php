@@ -6,35 +6,23 @@ namespace App\CommissionTask\Service;
 
 class Computation
 {
-    public $path;
     public $usd;
     public $jpy;
-    public $commission;
+    public $commission_fee;
     public $math;
+    public $conversion;
 
-    public function __construct($path)
+    public function __construct()
     {
         $this->usd = config('usd');
         $this->jpy = config('jpy');
-        $this->commission = config('commission');
-        $this->path = $path;
-        $this->math = new Math(3);
+        $this->commission_fee = config('commission');
+        $this->math = new Math(config('decimal_place'));
+        $this->conversion = new Conversion();
     }
 
-    public function convertCurrency($currency, $commission_fee): float
+    public function feeComputation($f): array
     {
-        if ($currency === 'USD') {
-            return (float) $this->math->mul(strval($commission_fee), strval($this->usd));
-        } elseif ($currency === 'JPY') {
-            return (float) $this->math->mul(strval($commission_fee), strval($this->jpy));
-        } else {
-            return (float) $commission_fee;
-        }
-    }
-
-    public function computation(): array
-    {
-        $f = fopen($this->path, 'r');
         $output = [];
         while (!feof($f)) {
             $data = fgetcsv($f);
@@ -47,7 +35,7 @@ class Computation
                 $cash = $this->math->div(strval($cash), strval($this->usd)); //if the currency is usd the cash will e converted to usd
             }
             /* commission fee calculation*/
-            $commission_fee = (float) $this->math->mul(strval($cash), strval($this->commission));
+            $commission_fee = (float) $this->math->mul(strval($cash), strval($this->commission_fee));
             $commission_fee = round(ceil($commission_fee * 100) / 100, 2); //cents is always ceiled
 
             switch ($data[3]) {
@@ -55,15 +43,15 @@ class Computation
                     $person = $data[2];
                     if ($person === 'legal') {
                         if ($commission_fee > 0.50) { //legal person Commission fee - 0.3% from amount, but not less than 0.50 EUR for operation.
-                            $commission_fee = $this->convertCurrency($currency, 0.50);
+                            $commission_fee = $this->conversion->convertCurrency($currency, 0.50);
                             array_push($output, number_format((float) $commission_fee, 2));
                         } else {
-                            $commission_fee = $this->convertCurrency($currency, $commission_fee);
+                            $commission_fee = $this->conversion->convertCurrency($currency, $commission_fee);
                             $total = number_format((float) $commission_fee, 2);
                             array_push($output, $total);
                         }
                     } else { //natural person Commission fee - 0.3% from cash out amount.
-                        $commission_fee = $this->convertCurrency($currency, $commission_fee);
+                        $commission_fee = $this->conversion->convertCurrency($currency, $commission_fee);
                         $total = number_format((float) $commission_fee, 2);
                         array_push($output, $total);
                     }
@@ -71,18 +59,16 @@ class Computation
                 break;
                 case 'cash_in':
                     if ($commission_fee > 5) { //cash in Commission fee - 0.03% from total amount, but no more than 5.00 EUR.
-                        $commission_fee = $this->convertCurrency($currency, 5.00);
+                        $commission_fee = $this->conversion->convertCurrency($currency, 5.00);
                         array_push($output, number_format((float) $commission_fee, 2));
                     } else {
-                        $commission_fee = $this->convertCurrency($currency, $commission_fee);
+                        $commission_fee = $this->conversion->convertCurrency($currency, $commission_fee);
                         $total = number_format((float) $commission_fee, 2);
                         array_push($output, $total);
                     }
                 break;
             }
         }
-
-        fclose($f);
 
         return $output;
     }
